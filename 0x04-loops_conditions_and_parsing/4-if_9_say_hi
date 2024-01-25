@@ -1,17 +1,19 @@
 #!/usr/bin/env bash
-# This script displays "Best School" 10 times using a while loop
-# On the 9th iteration it displays "Hi"
-# An if statement must be used
+# This script is displaying "Best School" 10 times,
+# but for the 9th iteration, displays Best School and then Hi on a new line.
 
-counter=0
+#!/usr/bin/env bash
+# Displays "Holberton School" 10 times using a while loop.
+#   On the 9th iteration, displays "Hi" before "Holberton School".
 
-while [ $counter -lt 10 ]
+i=0
+
+while [ $i -lt 10 ]
 do
-	if [ $counter -eq 9 ]
-	then
-		echo "Hi"
-	fi
-
-	echo "Best School"
-	(( counter++))
+  if [ $i -eq 9 ]
+  then
+    echo "Hi"
+  fi
+  echo "Best School"
+  (( i++ ))
 done
