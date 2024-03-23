@@ -8,8 +8,8 @@ Puppet resource type: file (check “Resource types” for all manifest types in
 Puppet’s Declarative Language: Modeling Instead of Scripting
 Puppet lint
 Puppet emacs mode
+![ATL TEXT](https://s3.amazonaws.com/intranet-projects-files/holbertonschool-sysadmin_devops/292/4i8il3B.gif# Requirements)
 
-# Requirements
 # General
 All your files will be interpreted on Ubuntu 20.04 LTS
 All your files should end with a new line
