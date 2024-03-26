@@ -2,8 +2,17 @@
 # Install nginx
 # Nginx should be listening on port 80
 
+# Update package index
 sudo apt-get update
+
+# Install nginx
 sudo apt-get -y install nginx
+
+# Allow traffic on port 80 (HTTP) through the firewall
 sudo ufw allow 'Nginx HTTP'
-sudo echo "Hello, world!" | sudo tee /var/www/html/index.html
+
+# Create a simple "Hello, world!" index page
+echo "Hello, world!" | sudo tee /var/www/html/index.html
+
+# Restart nginx service to apply changes
 sudo service nginx restart
