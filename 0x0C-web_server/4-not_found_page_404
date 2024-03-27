@@ -1,14 +1,46 @@
 #!/usr/bin/env bash
-# Install nginx on your web-01 server
+# Install nginx web server
 
-sudo apt-get -y update
-sudo apt-get -y install nginx
-echo 'Hello World!' | sudo tee /var/www/html/index.html
-echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
-sudo sed -i '/server_name _;/a \
-    error_page 404 /404.html;\n\
-    location = /404.html {\n\
-        internal;\n\
-    }' /etc/nginx/sites-available/default
+# Step 1 – Installing Nginx
+apt update
+apt install nginx -y
 
-sudo service nginx start
+# Nginx listening on port 80
+
+sed -i 's/listen [::]:80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
+
+# querying Nginx at its root / with a GET request (requesting a page) using curl
+
+cat <<EOF > /var/www/html/index.html
+Hello World!
+EOF
+
+# custom 404 page
+
+cat <<EOF > /var/www/html/error-page.html
+Ceci n'est pas une page
+EOF
+
+# Redirection & custom 404 page
+
+echo "server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+
+	root /var/www/html;
+	index index.html index.htm index.nginx-debian.html;
+	server_name _;
+
+	error_page 404 /error-page.html;
+        location /error-page.html {
+                root /var/www/html;
+                internal;
+        }
+
+	location /redirect_me {
+		return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+	}
+}" > /etc/nginx/sites-available/default
+
+# Restart nginx
+service nginx restart
