@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Install and configure HAproxy on your lb-01 server.
+
+# To install Debian/Ubuntu HAProxy packages
+
+apt-get -y update
+apt-get -y install haproxy
+
+# Configure HAProxy to share requests between two servers
+
+FILEPATH=/etc/haproxy/haproxy.cfg
+CONTENT="
+frontend http-frontend
+	bind *:80
+	mode http
+	default_backend http-backend
+backend http-backend
+	balance roundrobin
+	server 221385-web-01 54.86.45.44:80 check
+	server 221385-web-02 52.91.122.202:80 check"
+
+echo "$CONTENT" | sudo tee -a "$FILEPATH"
+
+# enable HAProxy to be started by the init script
+
+echo "ENDABLE=1" | sudo tee /etc/default/haproxy
+
+# Restart HAProxy
+
+service haproxy restart
