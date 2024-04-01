@@ -1,26 +1,30 @@
-#  Install Nginx web server (w/ Puppet)
+# Setup New Ubuntu server with nginx
+# and add a custom HTTP header
 
-# Update
-exec { 'apt_update':
-  command => 'apt-get update',
-  path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+exec { 'update system':
+        command => '/usr/bin/apt-get update',
 }
 
-# Install nginx
 package { 'nginx':
-  ensure     => 'installed',
+	ensure => 'installed',
+	require => Exec['update system']
 }
 
-# Handle custom_header
-file_line { 'add custom header':
-  ensure => present,
-  path   => '/etc/nginx/sites-enabled/default',
-  after  => 'listen 80 default_server;',
-  line   => 'add_header X-Served-By $hostname;',
+file {'/var/www/html/index.html':
+	content => 'Hello World!'
 }
 
-# start nginx
-service { 'nginx':
-  ensure  => running,
-  require => Package['nginx'],
+exec {'redirect_me':
+	command => 'sed -i "24i\	rewrite ^/redirect_me https://th3-gr00t.tk/ permanent;" /etc/nginx/sites-available/default',
+	provider => 'shell'
+}
+
+exec {'HTTP header':
+	command => 'sed -i "25i\	add_header X-Served-By \$hostname;" /etc/nginx/sites-available/default',
+	provider => 'shell'
+}
+
+service {'nginx':
+	ensure => running,
+	require => Package['nginx']
 }
