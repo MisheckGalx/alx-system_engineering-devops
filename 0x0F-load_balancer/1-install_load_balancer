@@ -16,8 +16,8 @@ frontend http-frontend
 	default_backend http-backend
 backend http-backend
 	balance roundrobin
-	server 221385-web-01 54.86.45.44:80 check
-	server 221385-web-02 52.91.122.202:80 check"
+	server 221385-web-01 100.25.223.70:80 check
+	server 221385-web-02 100.26.11.97:80 check"
 
 echo "$CONTENT" | sudo tee -a "$FILEPATH"
 
