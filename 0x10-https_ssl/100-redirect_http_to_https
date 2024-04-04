@@ -33,17 +33,19 @@ defaults
         errorfile 503 /etc/haproxy/errors/503.http
         errorfile 504 /etc/haproxy/errors/504.http
 
-frontend misheckgalx-frontend
+frontend http-frontend
         bind *:80
         mode http
         http-request redirect scheme https code 301 unless { ssl_fc }
         http-request set-header X_Forwarded-Proto http
+        default_backend http-backend
 
-frontend misheckgalx-frontend-https
+frontend http-frontend-https
         bind *:443 ssl crt /etc/haproxy/certs/www.misheckgalx.tech.pem
         http-request set-header X-Forwarded-Proto https
+        default_backend http-backend
 
-backend misheckgalx-backend
-        balance rou467059-web-01
-		server 467059-web-01 100.25.223.70:80 check
-		server 467059-web-02 100.26.11.97:80 check
+backend http-backend
+        balance roundrobin
+        server 467059-web-01 100.25.223.70:80 check
+        server 467059-web-02 100.26.11.97:80 check
