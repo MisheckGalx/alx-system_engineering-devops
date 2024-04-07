@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # Nginx likes port 80, debugging session
 
-rm /etc/nginx/sites-enabled/default
-sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 service nginx restart
